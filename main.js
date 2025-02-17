@@ -34,3 +34,39 @@ console.log("Có sinh viên nào dưới 18 tuổi không?", hasUnder18);
 // Sử dụng every để kiểm tra cả lớp có đầy đủ tên hay không
 const allHaveNames = students.every(student => student.name.trim() !== "");
 console.log("Tất cả sinh viên có đầy đủ tên không?", allHaveNames);
+const createPromise = (delay, student) => {
+    return new Promise((resolve, reject) => {
+        const randomNum = Math.floor(Math.random() * 11); // Random số từ 0-10
+        console.log(`\nRandom số sau ${delay} giây:`, randomNum);
+
+        setTimeout(() => {
+            if (randomNum % 2 === 0) {
+                resolve(student); // Thành công nếu số chẵn
+            } else {
+                reject("Dữ liệu lỗi"); // Thất bại nếu số lẻ
+            }
+        }, delay * 1000);
+    });
+};
+
+// Tạo hai Promise với thời gian chờ khác nhau
+const promise1 = createPromise(2, students[0]); // Chờ 2 giây
+const promise2 = createPromise(4, students[1]); // Chờ 4 giây
+
+// Sử dụng Promise.all để chạy cả hai Promise cùng lúc
+Promise.all([promise1, promise2])
+    .then(results => {
+        console.log("\nLấy dữ liệu hoàn thành:", results);
+    })
+    .catch(error => {
+        console.log("\nLỗi khi lấy dữ liệu:", error);
+    });
+
+// Sử dụng Promise.race để lấy dữ liệu từ Promise hoàn thành trước
+Promise.race([promise1, promise2])
+    .then(result => {
+        console.log("\nĐã lấy được dữ liệu:", result);
+    })
+    .catch(error => {
+        console.log("\nLỗi khi lấy dữ liệu:", error);
+    });
